@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<html>
+	<head>
+	<title>Donald Trump Scout Jamboree Speech 2017</title>
+		<style type="text/css">
+			.slice{
+				cursor: pointer;
+			}
+			body{
+				background-image: url("jamboBG.png");
+			}
+			#bars{
+				width:300px;
+				position: absolute;
+				top: 200px;
+				left: 500px;
+			}
+			#words{
+				background-color: #99ccff;
+				border: 2px black groove;
+				padding: 3px;
+				width: 60%;
+				font-size:14px;
+			}
+			#barsView{
+				background-color: white;
+				border: 1px gray ridge;
+				padding: 3px;
+				width: 720px;
+			}
+		</style>
+	</head>
+	<body>
+		<p id="words"><strong>Political Words:</strong> <span id='polList'></span><br>
+		<strong>Scouting Words:</strong> <span id='scoutList'></span></p>
+		<div id='pie'></div>
+		<div id='bars'></div>
+		<script src="https://d3js.org/d3.v4.min.js" ></script>
+		<script src="script.js"></script>
+	</body>
+</html>
