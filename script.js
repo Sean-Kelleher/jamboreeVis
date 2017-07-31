@@ -1,5 +1,4 @@
-
-var polWords = ["russia",'obama',"politician","election", "news", "vote", "republican", "democrat","administration"];
+var polWords = ["russia",'congress','media','obama',"politician","election", "news", "vote", "republican", "democrat","administration"];
 var scoutWords =["troop",'citizenship','service','prepared','fellowship','friendship','youth','character','leadership','conscience','kindness', 'merit'];
 var polCount = 0;
 var scoutCount = 0;
@@ -10,8 +9,10 @@ var scoutStroke = '#316b0a';
 var vis = d3.select('#pie').append('svg').attr('width', '450').attr('height','450');
 var g = vis.append("g");
 var gap = 60;
-var polWordsCounts = {congress:0,russia:0,obama:0,election : 0, news:0, politician:0, vote:0, republican:0, democrat:0, administration:0};
-var scoutWordsCounts = {troop:0,citizenship:0,service:0,prepared:0,fellowship:0,friendship:0,youth:0,character: 0, leadership:0, oath: 0, kindness: 0, conscience:0,merit:0};
+var polWordsCounts = {};
+//media:0,russia:0,congress:0, obama:0,election : 0, news:0, politician:0, vote:0, republican:0, democrat:0, administration:0
+//troop:0,citizenship:0,service:0,prepared:0,fellowship:0,friendship:0,youth:0,character: 0, leadership:0, oath: 0, kindness: 0, conscience:0,merit:0
+var scoutWordsCounts = {};
 var y = d3.scaleLinear()
 		.domain([0, 10])
 		.range([0, 200]);
@@ -20,28 +21,41 @@ d3.text('transcript.txt',function(error,data){
 	//Put each word of the transcript into an array, all lowercase, getting problematic line breaks out of the way
 	var modded = data.toLowerCase().replace(/(\r\n|\n|\r)/gm," ");
 	var transcript = modded.split(' ');
-	//Use includes() due to punctuation marks
-	polWords.forEach(function(elem){
+
+	function fillStuff(words, wordsCounts){
+		words.forEach(function(elem){
+			wordsCounts[elem] = 0;
+		})
+		//Use includes() due to punctuation marks
+		words.forEach(function(elem){
+			for(var i = 0; i < transcript.length; i++)
+			{
+				if(transcript[i].includes(elem))
+				{
+					wordsCounts[elem]++;
+				}
+			}
+		})
+	}
+	function countUp(words){
 		var count = 0;
-		for(var i = 0; i < transcript.length; i++)
-		{
-			if(transcript[i].includes(elem))
+		words.forEach(function(elem){
+			for(var i = 0; i < transcript.length; i++)
 			{
-				polCount++;
-				polWordsCounts[elem]++;
+				if(transcript[i].includes(elem))
+				{
+					count++;
+				}
 			}
-		}
-	})
-	scoutWords.forEach(function(elem){
-		for(var i = 0; i < transcript.length; i++)
-		{
-			if(transcript[i].includes(elem))
-			{
-				scoutCount++;
-				scoutWordsCounts[elem]++;
-			}
-		}
-	})
+		})	
+		return count;
+	}
+	
+	fillStuff(polWords, polWordsCounts);
+	fillStuff(scoutWords, scoutWordsCounts);
+	polCount = countUp(polWords);
+	scoutCount = countUp(scoutWords);
+
 	function makeWordLists(){
 		var polStr = '';
 		var scoutStr = '';
